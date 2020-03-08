@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	version = "0.0.1"
+	version = "0.0.2"
 
 	helpFlag    = flag.Bool("h", false, "Shows the help menu")
 	versionFlag = flag.Bool("v", false, "Show the version of the application")
