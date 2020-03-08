@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+const (
+	stdinHint = "-"
+)
+
 var (
 	version = "0.0.1"
 
@@ -39,19 +43,19 @@ func main() {
 	if *displayFlag {
 		displaySHA(sum)
 	}
-
 	exitcode := 0
-	if compairSHAs(convertSumToString(sum), *sumFlag) {
-		if *verboseFlag {
-			fmt.Println("OK")
+	if *sumFlag != "" {
+		if compairSHAs(convertSumToString(sum), *sumFlag) {
+			if *verboseFlag {
+				fmt.Println("OK")
+			}
+		} else {
+			if *verboseFlag {
+				fmt.Println("FAIL")
+			}
+			exitcode = 1
 		}
-	} else {
-		if *verboseFlag {
-			fmt.Println("FAIL")
-		}
-		exitcode = 1
 	}
-
 	os.Exit(exitcode)
 }
 
@@ -89,6 +93,9 @@ func validateFlags() error {
 }
 
 func readFile(path string) ([]byte, error) {
+	if path == stdinHint {
+		return ioutil.ReadAll(os.Stdin)
+	}
 	return ioutil.ReadFile(path)
 }
 
